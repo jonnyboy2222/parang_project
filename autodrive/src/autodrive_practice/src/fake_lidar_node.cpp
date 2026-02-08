@@ -1,16 +1,18 @@
-#include <chrono>
-#include <random>
+#include <chrono> // 시간 라이브러리, 타이머 주기나 시간 간격 표현
+#include <random> // 난수 생성 라이브러리
 #include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/float32.hpp>
+#include <std_msgs/msg/float32.hpp> // ros 표준 메세지 타입
 
-using namespace std::chrono_literals;
+using namespace std::chrono_literals; // std::chrono::milliseconds(100) -> 100ms 표현 가능
 
-class FakeLidarNode : public rclcpp::Node
+class FakeLidarNode : public rclcpp::Node // rclcpp::Node를 상속 (클래스 자체가 ROS2 노드)
 {
-public:
-  FakeLidarNode() : Node("fake_lidar")
+public: // 외부에서 접근 가능
+  FakeLidarNode() : Node("fake_lidar") // 노드 이름으로 생성자 호출
   {
     // parameters
+    // ROS2 파라미터는 반드시 declare 먼저
+    // 여기서 this는 FakeLidarNode 객체를 가리키는 포인터
     this->declare_parameter<std::string>("topic_out", "/fake/lidar_distance_m");
     this->declare_parameter<double>("rate_hz", 10.0);
     this->declare_parameter<double>("min_m", 0.5);
